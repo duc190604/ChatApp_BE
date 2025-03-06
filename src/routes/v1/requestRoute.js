@@ -7,5 +7,6 @@ router.get("/recipient", requestController.getRequestsByRecipient);
 router.get("/sender", requestController.getRequestsBySender);
 router.put("/:id", requestController.acceptRequest);
 router.delete("/:id", requestController.rejectRequest);
+router.delete("/friend/:id", requestController.deleteFriend);
 
 export default router;

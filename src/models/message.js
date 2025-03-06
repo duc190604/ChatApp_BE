@@ -5,9 +5,9 @@ const messageSchema = new Schema({
   chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
   content: { type: String, required: true },
   type: { type: String, enum: ["text", "image", "audio", "video"], required: true },
-  status: { type: String, enum: ["sent", "delivered", "seen", "failed"], required: true },
+  status: { type: String, enum: ["sent", "delivered", "seen"], required: true, default: "sent" },
   userDeleted: { type: [{ type: Schema.Types.ObjectId, ref: "User" }], required: false },
-  isDeleted: { type: Boolean, default: false },
+  isRevoked: { type: Boolean, default: false },
   isUpdated: { type: Boolean, default: false },
 }, { timestamps: true });
 messageSchema.virtual("id").get(function () {

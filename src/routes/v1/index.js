@@ -4,6 +4,7 @@ import userRouter from "./userRoute";
 import emailRouter from "./emailRoute";
 import uploadRouter from "./uploadRoute";
 import requestRouter from "./requestRoute";
+import chatRouter from "./chatRoute";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -13,5 +14,5 @@ router.use("/user", userRouter);
 router.use("/email", emailRouter);
 router.use("/upload", uploadRouter);
 router.use("/request", requestRouter);
-
+router.use("/chat", chatRouter);
 export const APIs_V1 = router;

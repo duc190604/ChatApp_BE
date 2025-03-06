@@ -47,6 +47,16 @@ const getRequestsBySender = async (req, res, next) => {
     next(error);
   }
 };
+const deleteFriend = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recipient = req.user.id;
+    const request = await requestService.deleteFriend(recipient,id);
+    res.status(200).json(request);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const requestController = {
   createRequest,
@@ -54,4 +64,5 @@ export const requestController = {
   rejectRequest,
   getRequestsByRecipient,
   getRequestsBySender,
+  deleteFriend,
 };

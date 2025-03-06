@@ -8,6 +8,6 @@ router.post("/register", userValidation.register, userController.register);
 router.post("/logout", userController.logout);
 router.post("/change-password", userController.changePassword);
 router.post("/reset-password", userController.resetPassword);
-router.get("/:username", userController.findUserByUsername);
+router.get("/find-by-username/:username", userController.findUserByUsername);
 
 export default router;

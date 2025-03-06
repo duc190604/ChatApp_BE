@@ -86,4 +86,5 @@ export const requestService = {
   getRequestsByRecipient,
   getRequestsBySender,
   getFriend,
+  deleteFriend,
 };
