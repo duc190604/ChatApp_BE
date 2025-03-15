@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 const chatSchema = new Schema({
-  members: { type: Array, ref: "User" },
+  members: {  type: [{ type: Schema.Types.ObjectId, ref: "User" }] },
   isGroup: { type: Boolean, default: false },
   userMuted: { type: [{ type: Schema.Types.ObjectId, ref: "User" }], required: false },
   pinnedMessages: { type: [{ type: Schema.Types.ObjectId, ref: "Message" }], required: false },

@@ -1,7 +1,6 @@
 import { Request } from "~/models/request";
 import ApiError from "~/utils/ApiError";
 import { User } from "~/models/user";
-import { friendService } from "~/services/friendService";
 const createRequest = async (sender, recipient) => {
   const existingRequest = await Request.findOne({ sender, recipient });
   if (existingRequest) {
