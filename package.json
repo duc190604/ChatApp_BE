@@ -1,5 +1,5 @@
 {
-  "name": "se356-chatapp_be",
+  "name": "chatapp_be",
   "version": "1.0.0",
   "description": "BE for chat app",
   "main": "server.js",
