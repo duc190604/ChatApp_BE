@@ -5,8 +5,9 @@ const router = Router();
 
 router.post("/", messageValidation.createMessage, messageController.createMessage);
 router.put("/:id", messageValidation.updateMessage, messageController.updateMessage);
+router.delete("/:id/revoke", messageController.revokeMessage);
 router.delete("/:id",messageController.deleteMessage);
-router.delete("/revoke/:id",messageController.revokeMessage);
+router.get("/:id",messageController.getMessages);
 
 export default router;
 

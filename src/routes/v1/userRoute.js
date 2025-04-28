@@ -9,5 +9,6 @@ router.post("/logout", userController.logout);
 router.post("/change-password", userController.changePassword);
 router.post("/reset-password", userController.resetPassword);
 router.get("/find-by-username/:username", userController.findUserByUsername);
+router.get("/refresh-token",userController.refreshToken)
 
 export default router;

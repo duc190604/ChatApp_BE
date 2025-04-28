@@ -2,7 +2,7 @@ import Joi from "joi";
 import { objectIdRule } from "~/utils/validator";
 const createPrivateChat = async (req, res, next) => {
   const correctCondition = {
-   recipient: objectIdRule().required()
+   recipient: objectIdRule.required()
   };
   try{
     await Joi.object(correctCondition).validateAsync(req.body,{abortEarly:false});
@@ -13,7 +13,7 @@ const createPrivateChat = async (req, res, next) => {
 };
 const createGroupChat = async (req, res, next) => {
   const correctCondition = {
-    members: Joi.array().items(objectIdRule().required()).min(3).required(),
+    members: Joi.array().items(objectIdRule.required()).min(3).required(),
     name: Joi.string().required(),
     avatar: Joi.string().optional(),
   };

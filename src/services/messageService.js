@@ -1,13 +1,22 @@
 import Message from "~/models/message";
-
+import ApiError from "~/utils/ApiError";
 const createMessage = async (message) => {
   const newMessage = await Message.create(message);
-  return newMessage;
+  const populatedMessage = await newMessage.populate({
+    path: "sender",
+    select: "username avatar _id"
+  });
+  return populatedMessage;
 };
 
-const getMessages = async (chatId) => {
-  const messages = await Message.find({ chat: chatId });
-  return messages;
+const getMessages = async (chatId, userId) => {
+  const messages = await Message.find({ chat: chatId }).populate({
+    path: "sender",
+    select: "username avatar _id",
+  });
+  console.log("userId",userId);
+  const filteredMessages = messages.filter(message => !message.userDeleted.includes(userId));
+  return filteredMessages;
 };
 
 const revokeMessage = async (messageId, userId) => {
@@ -28,16 +37,18 @@ const deleteMessage = async (messageId,userId) => {
   await message.save();
   return message;
 };
-const updateMessage = async (messageId,userId,content,type) => {
-  const message = await Message.findById(messageId);
+const updateMessage = async (messageId,userId,content) => {
+  const message = await Message.findById(messageId).populate({
+    path: "sender",
+    select: "username avatar _id",
+  });;
   if(!message){
     throw new ApiError(404, "Message not found");
   }
-  if(message.sender.toString() !== userId){
+  if(message.sender._id.toString() !== userId){
     throw new ApiError(403, "You are not allowed to update this message");
   }
   message.content = content;
-  message.type = type;
   message.isUpdated = true;
   await message.save();
   return message;

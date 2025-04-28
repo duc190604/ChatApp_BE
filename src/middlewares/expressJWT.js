@@ -18,7 +18,6 @@ const authJwt = expressjwt({
 }).unless({
   path: [
     "/api/v1/user/login",
-    "/api/v1/user/refresh-token",
     "/api/v1/email/send-verify-email",
     "/api/v1/email/verify-email",
     new RegExp("/api/v1/upload/*"),

@@ -3,9 +3,9 @@ import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "../utils/validator";
 const createMessage = async (req, res, next) => {
   const correctCondition = {
     content: Joi.string().required(),
-    chatId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    senderId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    type: Joi.string().required().valid("text", "image", "audio", "video"),
+    chat: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    sender: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    type: Joi.string().required().valid("text", "image", "audio", "video", "file"),
   };
   try{
     await Joi.object(correctCondition).validateAsync(req.body,{abortEarly:false});
@@ -17,7 +17,6 @@ const createMessage = async (req, res, next) => {
 const updateMessage = async (req, res, next) => {
   const correctCondition = {
     content: Joi.string().required(),
-    type: Joi.string().required().valid("text", "image", "audio", "video"),
   };
   try{
     await Joi.object(correctCondition).validateAsync(req.body,{abortEarly:false});

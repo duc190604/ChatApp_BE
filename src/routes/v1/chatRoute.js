@@ -44,5 +44,6 @@ router.post(
   chatValidation.modifyAdminGroupChat,
   chatController.removeAdminFromGroupChat
 );
-
+router.get("/", chatController.getChatByUserId);
+router.get("/:chatId", chatController.getChatById);
 export default router;

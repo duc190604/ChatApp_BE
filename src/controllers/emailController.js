@@ -7,7 +7,7 @@ const sendVerifyEmail = async (req, res, next) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-    return res.status(400).json({ message: "Email already exists" });
+    return res.status(409).json({ message: "Email already exists" });
   }
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   codeVerify[email] = code;
@@ -25,10 +25,10 @@ const verifyEmail = async (req, res, next) => {
     const { email, code } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-    return res.status(400).json({ message: "Email already exists" });
+    return res.status(409).json({ message: "Email already exists" });
   }
     if (codeVerify[email] !== code) {
-      return res.status(400).json({ message: "Invalid code" });
+      return res.status(422).json({ message: "Invalid code" });
     }
     const token = await generateToken(email, "5m", "email");
     const decodedToken = await verifyToken(token);

@@ -25,17 +25,26 @@ const deleteMessage = async (req, res, next) => {
 };
 const updateMessage = async (req, res, next) => {
   try {
-    const {content,type} = req.body;
-    const message = await messageService.updateMessage(req.params.id,req.user.id,content,type);
+    const {content} = req.body;
+    const message = await messageService.updateMessage(req.params.id,req.user.id,content);
     res.status(200).json(message);
   } catch (error) {
     next(error);
   }
 };
+const getMessages = async (req, res, next) => {
+  try {
+    const messages = await messageService.getMessages(req.params.id,req.user.id);
+    res.status(200).json(messages);
+  } catch (error) {
+    next(error);
+  }
+};  
 export const messageController = {
   createMessage,
   revokeMessage,
   deleteMessage,
   updateMessage,
+  getMessages,
 };
 

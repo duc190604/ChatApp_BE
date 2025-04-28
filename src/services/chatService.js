@@ -1,7 +1,11 @@
 import Chat from "~/models/chat";
+import User from "~/models/user";
+import { DEFAULT_AVATAR } from "~/utils/constants";
+import ApiError from "~/utils/ApiError";
 const createPrivateChat = async (sender, recipient) => {
   const chat = await Chat.create({
     members: [sender, recipient],
+    creator: sender,
   });
   return chat;
 };
@@ -121,7 +125,42 @@ const removeAdminFromGroupChat = async (chatId, admin,userId) => {
   chat.admin = chat.admin.filter(a => a.toString() !== admin.toString());
   await chat.save();
   return chat;
-};  
+};
+const getChatByUserId = async (userId) => {
+  const chats = await Chat.find({ members: { $in: [userId] } }).populate("lastMessage");
+  if(!chats){
+    throw new ApiError(404, "No chats found");
+  }
+  const updatedChats = await Promise.all(chats.map(async (chat) => {
+    if(!chat.isGroup){
+      const user = await User.findById(chat.members.find(m => m.toString() !== userId.toString()));
+      return {
+        ...chat.toObject(),
+        name: user.username,
+        avatar: user.avatar || DEFAULT_AVATAR,
+      }
+    }
+    return chat;
+  }));
+  console.log(updatedChats);
+  return updatedChats;
+};
+const getChatById = async (chatId,userId) => {
+  const chat = await Chat.findById(chatId);
+  if(!chat){
+    throw new ApiError(404, "Chat not found");
+  }
+  const user = await User.findById(chat.members.find(m => m.toString() !== userId.toString()));
+  if(!user){
+    throw new ApiError(404, "User not found"  );
+  }
+  const updatedChat = {
+    ...chat.toObject(),
+    name: user.username,
+    avatar: user.avatar || DEFAULT_AVATAR,
+  }
+  return updatedChat;
+};
 
 export const chatService = {
   createPrivateChat,
@@ -133,4 +172,6 @@ export const chatService = {
   unpinMessage,
   addAdminToGroupChat,
   removeAdminFromGroupChat,
+  getChatByUserId,
+  getChatById,
 };

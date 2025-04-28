@@ -7,6 +7,7 @@ const userSchema = new Schema({
   avatar: { type: String, required: false },
   status: { type: String, required: false },
   description: { type: String, required: false, default: "" },
+  lastSeen: { type: Date, required: false },
   chatLocked: {
     type: [
       {

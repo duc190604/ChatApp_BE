@@ -13,7 +13,10 @@ const chatSchema = new Schema({
   membersBlocked: { type: [{ type: Schema.Types.ObjectId, ref: "User" }], required: false },//for private chat
   isAdminMode: { type: Boolean, default: false, required: false },
 
-}, { timestamps: true });
+}, { timestamps: true,
+  toObject: { virtuals: true },
+  toJSON: { virtuals: true },
+ });
 chatSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });

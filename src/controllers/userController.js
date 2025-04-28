@@ -1,6 +1,7 @@
 import { userService } from "~/services/userService";
 import { generateToken } from "~/utils/auth";
 import { refreshTokenService } from "~/services/refreshTokenService";
+import User from "~/models/user";
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -8,7 +9,7 @@ const login = async (req, res, next) => {
     const accessToken = await generateToken(user.id, "1h", "access");
     const refreshToken = await generateToken(user.id, "7d", "refresh");
     await refreshTokenService.addRefreshToken(refreshToken, user.id);
-    res.status(200).json({ accessToken, refreshToken });
+    res.status(200).json({ user, accessToken, refreshToken });
   } catch (error) {
     next(error);
   }
@@ -17,7 +18,7 @@ const register = async (req, res, next) => {
   try {
     const userToken = req.user
     if(userToken.type !== "email" || userToken.id !== req.body.email){
-      return res.status(400).json({ message: "Invalid token for email verification" });
+      return res.status(422).json({ message: "Invalid token for email verification" });
     }
     const user = await userService.register(req.body);
     res.status(200).json(user);
@@ -65,6 +66,17 @@ const findUserByUsername = async (req, res, next) => {
     next(error);
   }
 };
+const refreshToken =async (req,res, next)=>{
+  try {
+    const userToken = req.user
+    const accessToken = await generateToken(userToken.id, "1h", "access");
+    res.status(200).json({accessToken})
+  }
+  catch (error)
+  {
+    next(err)
+  }
+}
 export const userController = {
   login,
   register,
@@ -72,4 +84,5 @@ export const userController = {
   changePassword,
   resetPassword,
   findUserByUsername,
+  refreshToken
 };

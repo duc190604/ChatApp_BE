@@ -2,11 +2,15 @@ import { hashPassword, comparePassword } from "~/utils/auth";
 import refreshTokenService from "~/services/refreshTokenService";
 import User from "~/models/user";
 import ApiError from "~/utils/ApiError";
+import { DEFAULT_AVATAR } from "~/utils/constants";
 const register = async (data) => {
   const password = await hashPassword(data.password);
   const isExist = await User.findOne({ email: data.email });
   if (isExist) {
     throw new ApiError(400, "Email already exists");
+  }
+  if(!data.avatar){
+    data.avatar = DEFAULT_AVATAR;
   }
   const user = await User.create({ ...data, password });
   delete user.password;

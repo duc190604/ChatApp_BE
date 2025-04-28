@@ -96,6 +96,25 @@ const removeAdminFromGroupChat = async (req, res,next) => {
     next(error);
   }
 };
+const getChatByUserId = async (req, res,next) => {
+  try {
+    const userId = req.user.id;
+    const chats = await chatService.getChatByUserId(userId);
+    res.status(200).json(chats);
+  } catch (error) {
+    next(error);
+  }
+};
+const getChatById = async (req, res,next) => {
+  try {
+    const { chatId } = req.params;
+    const userId = req.user.id;
+    const chat = await chatService.getChatById(chatId,userId);
+    res.status(200).json(chat);
+  } catch (error) {
+    next(error);
+  }
+};
 export const chatController = {
   createPrivateChat,
   createGroupChat,
@@ -106,6 +125,8 @@ export const chatController = {
   unpinMessage,
   addAdminToGroupChat,
   removeAdminFromGroupChat,
+  getChatByUserId,
+  getChatById,
 };
 
 
